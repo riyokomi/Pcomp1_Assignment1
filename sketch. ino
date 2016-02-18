@@ -1,0 +1,56 @@
+int sensePin = 0;
+int ledPin = 8;
+
+float pressLength_milliSeconds = 0;
+
+int optionOne_milliSeconds = 100;
+int optionTwo_milliSeconds = 2000;
+
+int buttonPin = 2;
+
+int ledPin_Option_1 = 13;
+int ledPin_Option_2 = 12;
+
+void setup() {
+  // put your setup code here, to run once:
+  analogReference(DEFAULT);
+
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(ledPin_Option_1, OUTPUT);
+  pinMode(ledPin_Option_2, OUTPUT);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  int val = analogRead(sensePin);
+  
+  if(val<300) digitalWrite(ledPin, HIGH);
+  else digitalWrite(ledPin, LOW);
+  
+  Serial.println(analogRead(sensePin));
+  delay(500);
+
+  while(digitalRead(buttonPin) == LOW){
+    delay(100);
+    pressLength_milliSeconds = pressLength_milliSeconds + 100;
+    Serial.print("ms =");
+    Serial.println(pressLength_milliSeconds);
+    }
+
+    if(pressLength_milliSeconds >= optionTwo_milliSeconds){
+      digitalWrite(ledPin_Option_2, HIGH);
+    }
+
+    else if(pressLength_milliSeconds >= optionOne_milliSeconds){
+      digitalWrite(ledPin_Option_1, HIGH);
+    }
+    
+      
+    pressLength_milliSeconds = 0;
+}
+
+//reference: 
+//https://youtu.be/js4TK0U848I?list=PLnDC3M-KZLJ7mU3rWpUbNkFCo5cKcRilu
